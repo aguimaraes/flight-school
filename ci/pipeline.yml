@@ -32,7 +32,8 @@ jobs:
           tag: 2.3.0
 
       run:
-        path: ./pr/ci/test.sh
+        dir: pr
+        path: ./ci/test.sh
 
       on_success:
         put: flight-school-pr
