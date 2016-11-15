@@ -26,20 +26,7 @@ jobs:
   - get: flight-school
     trigger: true
   - task: master tests
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source: 
-          repository: ruby
-          tag: 2.3.0
-
-      inputs:
-        - name: flight-school
-
-      run:
-        path: ./ci/test.sh
-        dir: flight-school
+    file: ci/tasks/test-master.yml
 
 - name: pr
   plan:
@@ -51,6 +38,7 @@ jobs:
       status: pending
 
   - task: tests
+    file: ci/tasks/test-pr.yml
     on_success:
         put: flight-school-pr
         params:
@@ -61,17 +49,3 @@ jobs:
       params:
         path: flight-school-pr
         status: failure
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source: 
-          repository: ruby
-          tag: 2.3.0
-
-      inputs:
-        - name: flight-school-pr
-
-      run:
-        path: ./ci/test.sh
-        dir: flight-school-pr
