@@ -24,6 +24,16 @@ jobs:
       status: pending
 
   - task: tests
+    on_success:
+        put: flight-school-pr
+        params:
+          path: flight-school-pr
+          status: success
+    on_failure:
+      put: flight-school-pr
+      params:
+        path: flight-school-pr
+        status: failure
     config:
       platform: linux
       image_resource:
@@ -38,14 +48,3 @@ jobs:
       run:
         path: ./ci/test.sh
         dir: flight-school-pr
-
-      on_success:
-        put: flight-school-pr
-        params:
-          path: flight-school-pr
-          status: success
-      on_failure:
-        put: flight-school-pr
-        params:
-          path: flight-school-pr
-          status: failure
