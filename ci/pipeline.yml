@@ -32,7 +32,7 @@ jobs:
           tag: 2.3.0
 
       run:
-        path: ./flight-school-pr/ci/test.sh
+        path: ./pr/ci/test.sh
 
       on_success:
         put: flight-school-pr
