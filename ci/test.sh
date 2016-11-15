@@ -2,7 +2,7 @@
 
 set -e -x
 
-pushd pr
+pushd .
   bundle install
   bundle exec rspec
 popd
