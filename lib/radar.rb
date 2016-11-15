@@ -22,7 +22,7 @@ class Radar
     Status.new(
       decoded.fetch("IATA"),
       decoded.fetch("name"),
-      decoded.fetch("city"),
+      # decoded.fetch("city"),
       decoded.fetch("weather").fetch("weather"),
     )
   end
