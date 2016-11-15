@@ -37,6 +37,7 @@ jobs:
 
       run:
         path: ./ci/test.sh
+        dir: flight-school-pr
 
       on_success:
         put: flight-school-pr
