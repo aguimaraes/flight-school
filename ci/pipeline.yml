@@ -32,6 +32,9 @@ jobs:
           repository: ruby
           tag: 2.3.0
 
+      inputs:
+        - name: flight-school-pr
+
       run:
         path: ./ci/test.sh
         dir: flight-school-pr       
