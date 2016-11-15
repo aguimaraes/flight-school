@@ -23,4 +23,24 @@ jobs:
       path: flight-school-pr
       status: pending
   - task: tests
-    file: flight-school/test-task.yml
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: 
+          repository: ruby
+          tag: 2.3.0
+
+      run:
+        path: ./flight-school-pr/ci/test.sh
+
+      on_success:
+        put: flight-school-pr
+        params:
+          path: flight-school-pr
+          status: success
+      on_failure:
+        put: flight-school-pr
+        params:
+          path: flight-school-pr
+          status: failure
