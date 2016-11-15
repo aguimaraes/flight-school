@@ -1,14 +1,50 @@
-resources:
-- name: flight-school
-  type: git
+resource_types:
+- name: pull-request
+  type: docker-image
   source:
-    uri: https://github.com/aguimaraes/flight-school
-    branch: master
+    repository: jtarchie/pr
+
+resources:
+
+- name: flight-school-pr
+  type: pull-request
+  source:
+    uri: {{uri}}
+    access_token: {{access_token}}
+    repo: aguimaraes/flight-school
         
 jobs:
-- name: test-app
+- name: pr
   plan:
-  - get: flight-school
+  - get: flight-school-pr
     trigger: true
+  - put: flight-school-pr
+    params:
+      path: flight-school-pr
+      status: pending
+
   - task: tests
-    file: flight-school/build.yml
+    on_success:
+        put: flight-school-pr
+        params:
+          path: flight-school-pr
+          status: success
+    on_failure:
+      put: flight-school-pr
+      params:
+        path: flight-school-pr
+        status: failure
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: 
+          repository: ruby
+          tag: 2.3.0
+
+      inputs:
+        - name: flight-school-pr
+
+      run:
+        path: ./ci/test.sh
+        dir: flight-school-pr
