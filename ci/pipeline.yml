@@ -22,6 +22,7 @@ jobs:
     params:
       path: flight-school-pr
       status: pending
+      
   - task: tests
     config:
       platform: linux
