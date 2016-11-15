@@ -26,7 +26,7 @@ jobs:
   - get: flight-school
     trigger: true
   - task: master tests
-    file: ci/tasks/test-master.yml
+    file: flight-school/ci/tasks/test-master.yml
 
 - name: pr
   plan:
@@ -38,7 +38,7 @@ jobs:
       status: pending
 
   - task: tests
-    file: ci/tasks/test-pr.yml
+    file: flight-school-pr/ci/tasks/test-pr.yml
     on_success:
         put: flight-school-pr
         params:
