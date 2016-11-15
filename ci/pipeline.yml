@@ -6,6 +6,12 @@ resource_types:
 
 resources:
 
+- name: flight-school
+  type: git
+  source:
+    uri: {{uri}}
+    branch: master
+
 - name: flight-school-pr
   type: pull-request
   source:
@@ -14,6 +20,27 @@ resources:
     repo: aguimaraes/flight-school
         
 jobs:
+
+- name: flight-school-master
+  plan:
+  - get: flight-school
+    trigger: true
+  - task: master tests
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: 
+          repository: ruby
+          tag: 2.3.0
+
+      inputs:
+        - name: flight-school
+
+      run:
+        path: ./ci/test.sh
+        dir: flight-school
+
 - name: pr
   plan:
   - get: flight-school-pr
