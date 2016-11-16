@@ -8,8 +8,8 @@ image_resource:
     tag: 2.3.0
 
 inputs:
-  - name: flight-school
+  - name: master-resource
 
 run:
   path: ./ci/test.sh
-  dir: flight-school
+  dir: master-resource

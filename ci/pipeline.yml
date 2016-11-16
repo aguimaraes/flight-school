@@ -6,13 +6,13 @@ resource_types:
 
 resources:
 
-- name: flight-school
+- name: master-resource
   type: git
   source:
     uri: {{uri}}
     branch: master
 
-- name: flight-school-pr
+- name: pr-resource
   type: pull-request
   source:
     uri: {{uri}}
@@ -21,31 +21,31 @@ resources:
         
 jobs:
 
-- name: flight-school-master
+- name: commit-to-master
   plan:
-  - get: flight-school
+  - get: master-resource
     trigger: true
-  - task: master tests
-    file: flight-school/ci/tasks/test-master.yml
+  - task: test
+    file: master-resource/ci/tasks/test-master.yml
 
-- name: pr
+- name: pr-changed
   plan:
-  - get: flight-school-pr
+  - get: pr-resource
     trigger: true
-  - put: flight-school-pr
+  - put: pr-resource
     params:
-      path: flight-school-pr
+      path: pr-resource
       status: pending
 
-  - task: tests
-    file: flight-school-pr/ci/tasks/test-pr.yml
+  - task: test
+    file: pr-resource/ci/tasks/test-pr.yml
     on_success:
-        put: flight-school-pr
+        put: pr-resource
         params:
-          path: flight-school-pr
+          path: pr-resource
           status: success
     on_failure:
-      put: flight-school-pr
+      put: pr-resource
       params:
-        path: flight-school-pr
+        path: pr-resource
         status: failure
